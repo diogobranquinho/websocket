@@ -12,3 +12,8 @@ pip install tornado
 ## Executando o exemplo Repete
 
 ## Executando o exemplo Chat
+
+## Autor
+
+* **Diogo Branquinho Ramos** - *Initial work* - [diogobranquinho](https://github.com/diogobranquinho)
+
