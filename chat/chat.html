@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSockets - Chat</title>
+    </head>
+    <body style="font-family: Lekton; font-size: 24pt">
+        <p style="width: 800px">Prj Banco de Dados Distribuídos. Batendo papo com os amigos ;)</p>
+        <div id="chatbox" style="font-size: 14pt; height: 400px; width: 800px; overflow: scroll; border: 1px solid black"></div>
+        <form id="conversa" onsubmit="EnviaTexto()" action="javascript:void(0);">
+			<input type="text" id="name" name="name" style="width:60px" />
+            <input type="text" id="msg" name="msg" autocomplete="off" style="width:700px" />
+            <input type="submit" id="sub" name="sub" value="Envia" style="width:90px" />
+        </form>
+        <script type="text/javascript">
+            var ws = new WebSocket("ws://localhost:8887/websocket");
+            ws.onmessage = function(evt){
+                x = document.createElement("p");
+                x.innerHTML = evt.data;				
+				var cbox = document.getElementById("chatbox");				
+				cbox.innerHTML = "";
+				cbox.appendChild(x);
+				cbox.scrollTop = cbox.scrollHeight;   
+            }
+ 
+            function EnviaTexto(){
+                var userInput = document.getElementById("name").value;
+				userInput += ": ";
+				userInput += document.getElementById("msg").value;
+				document.getElementById("chatbox").innerHTML = "";
+                document.getElementById("msg").value = "";
+                ws.send(userInput);
+            }
+        </script>
+    </body>
+</html>
