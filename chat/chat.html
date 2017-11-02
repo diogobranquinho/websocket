@@ -35,9 +35,7 @@
         function EnviaTexto() {
 
             var horario = new Date();
-            var hora = horario.getHours();
-            var minuto = horario.getMinutes();
-            msgHora = hora + ":" + minuto;
+            msgHora = horario.getHours() + ":" + horario.getMinutes();
 
             var chatbox = document.getElementById("chatbox");
             var msg = document.getElementById("msg");
