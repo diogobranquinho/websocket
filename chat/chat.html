@@ -1,35 +1,148 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>WebSockets - Chat</title>
-    </head>
-    <body style="font-family: Lekton; font-size: 24pt">
-        <p style="width: 800px">Prj Banco de Dados Distribuídos. Batendo papo com os amigos ;)</p>
-        <div id="chatbox" style="font-size: 14pt; height: 400px; width: 800px; overflow: scroll; border: 1px solid black"></div>
-        <form id="conversa" onsubmit="EnviaTexto()" action="javascript:void(0);">
-			<input type="text" id="name" name="name" style="width:60px" />
-            <input type="text" id="msg" name="msg" autocomplete="off" style="width:700px" />
-            <input type="submit" id="sub" name="sub" value="Envia" style="width:90px" />
-        </form>
-        <script type="text/javascript">
-            var ws = new WebSocket("ws://localhost:8887/websocket");
-            ws.onmessage = function(evt){
-                x = document.createElement("p");
-                x.innerHTML = evt.data;				
-				var cbox = document.getElementById("chatbox");				
-				cbox.innerHTML = "";
-				cbox.appendChild(x);
-				cbox.scrollTop = cbox.scrollHeight;   
-            }
- 
-            function EnviaTexto(){
-                var userInput = document.getElementById("name").value;
-				userInput += ": ";
-				userInput += document.getElementById("msg").value;
-				document.getElementById("chatbox").innerHTML = "";
-                document.getElementById("msg").value = "";
-                ws.send(userInput);
-            }
-        </script>
-    </body>
+
+<head>
+    <title>WebSockets - Chat</title>
+</head>
+
+<body>
+    <h1>Prj Banco de Dados Distribuídos. Batendo papo com os amigos ;)</h1>
+    <div id="chatbox" class="message-screen"></div>
+    <form id="conversa" class="inputField" onsubmit="EnviaTexto()" action="javascript:void(0);">
+        <div class="inputGroup">
+            <span>Username</span>
+            <input type="text" placeholder="Username" id="name" name="name" required>
+        </div>
+
+        <div class="inputGroup">
+            <span>Mensagem</span>
+            <input type="text" id="msg" placeholder="Mensagem" name="msg" required>
+        </div>
+
+        <input type="submit" value="Enviar">
+    </form>
+    <script>
+        var ws = new WebSocket("ws://localhost:8887/websocket");
+        ws.onmessage = function (evt) {
+            x = document.createElement("div");
+            x.innerHTML = evt.data;
+            var cbox = document.getElementById("chatbox");
+            cbox.innerHTML = "";
+            cbox.appendChild(x);
+            cbox.scrollTop = cbox.scrollHeight;
+        }
+
+        function EnviaTexto() {
+
+            var horario = new Date();
+            var hora = horario.getHours();
+            var minuto = horario.getMinutes();
+            msgHora = hora + ":" + minuto;
+
+            var chatbox = document.getElementById("chatbox");
+            var msg = document.getElementById("msg");
+            var name = document.getElementById("name");
+
+            var userName = name.value;
+            var message = msg.value;
+
+            var msgPackage = [];
+            var msgPackage = [
+                userName,
+                message,
+                msgHora
+            ];
+
+            chatbox.innerHTML = "";
+            msg.value = "";
+
+            ws.send(msgPackage);
+        }
+    </script>
+
+    <style>
+
+        h1 {
+            text-align: center;
+        }
+        .message-screen {
+            background-color: #f5f5f5;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-size: 14px;
+            margin: auto;
+            max-height: 50vh;
+            max-width: 768px;
+            padding: 20px;
+            overflow-y: scroll;
+        }
+
+        .msgBody {
+            background-color: #fff;
+            border-radius: 10px;
+            display: block;
+            height: auto;
+            padding: 10px;
+            margin: 20px;
+            max-width: 350px;
+            word-wrap: break-word;
+        }
+
+        .msgBody .username {
+            color: #009688;
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+            text-transform: capitalize;
+        }
+
+        .msgBody .message {
+            font-size: 18px;
+            font-weight: 100;
+            margin: 0;
+            padding: 0;
+            padding: 5px 0;
+        }
+
+        .msgBody .time {
+            font-weight: 100;
+            font-size: 10px;
+            text-align: right;
+        }
+
+        .inputField {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            flex-flow: row wrap;
+        }
+
+        .inputGroup {
+            margin: 10px;
+            padding: 5px;
+        }
+
+        .inputGroup input {
+            border: solid 1px gray;
+            border-radius: 4px;
+            height: 30px;
+        }
+
+        input[type="submit"] {
+            border: 1px solid gray;
+            height: 30px;
+            border-radius: 5px;
+            margin-top: 20px;
+            width: 100px;
+        }
+
+        span {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+    </style>
+</body>
+
 </html>
