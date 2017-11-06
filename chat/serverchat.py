@@ -6,7 +6,7 @@ import tornado.ioloop
 from tornado.options import define, options, parse_command_line
 define("port", default=8887, help="run on the given port", type=int) 
 
-chatTexto = "Chat Server Prj BDD"
+chatTexto = "<h2>Chat Server Prj BDD</h2>"
 connections = set()
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -22,8 +22,23 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 	def on_message(self, message):
 		global chatTexto
 		global connections
-		chatTexto += "<br>" 
-		chatTexto += message
+
+		objTexto = message.strip().split(',')
+		userName = objTexto[0]
+		mensagem = objTexto[1]
+		hora = objTexto[2]
+
+		chatTexto += "<div class='msgBody'>"
+		chatTexto += "<p class='username'>"
+		chatTexto += userName
+		chatTexto += " diz: </p>"
+		chatTexto += "<p class='message'>" 
+		chatTexto += mensagem
+		chatTexto += "<span class='time'>"
+		chatTexto += hora
+		chatTexto += "</span>"
+		chatTexto += "</p>"
+		chatTexto += "</div>"
 		print chatTexto
 		for con in connections:
 			con.write_message(chatTexto)
