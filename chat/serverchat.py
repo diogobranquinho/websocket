@@ -39,7 +39,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 		chatTexto += "</span>"
 		chatTexto += "</p>"
 		chatTexto += "</div>"
-		print chatTexto
+		print(chatTexto)
 		for con in connections:
 			con.write_message(chatTexto)
 			
