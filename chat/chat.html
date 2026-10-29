@@ -7,7 +7,7 @@
 
 <body>
     <h1>Prj Banco de Dados Distribuídos. Batendo papo com os amigos ;)</h1>
-    <div id="chatbox" class="message-screen"></div>
+    <div id="chatbox" class="message-screen"><h2>Chat Server Prj BDD</h2></div>
     <form id="conversa" class="inputField" onsubmit="EnviaTexto()" action="javascript:void(0);">
         <div class="inputGroup">
             <span>Username</span>
@@ -24,10 +24,10 @@
     <script>
         var ws = new WebSocket("ws://localhost:8887/websocket");
         ws.onmessage = function (evt) {
+            // Cada mensagem recebida e adicionada ao final do chat
             x = document.createElement("div");
             x.innerHTML = evt.data;
             var cbox = document.getElementById("chatbox");
-            cbox.innerHTML = "";
             cbox.appendChild(x);
             cbox.scrollTop = cbox.scrollHeight;
         }
@@ -37,24 +37,22 @@
             var horario = new Date();
             msgHora = horario.getHours() + ":" + horario.getMinutes();
 
-            var chatbox = document.getElementById("chatbox");
             var msg = document.getElementById("msg");
             var name = document.getElementById("name");
 
             var userName = name.value;
             var message = msg.value;
 
-            var msgPackage = [];
             var msgPackage = [
                 userName,
                 message,
                 msgHora
             ];
 
-            chatbox.innerHTML = "";
             msg.value = "";
 
-            ws.send(msgPackage);
+            // Envia [nome, mensagem, hora] no formato JSON
+            ws.send(JSON.stringify(msgPackage));
         }
     </script>
 

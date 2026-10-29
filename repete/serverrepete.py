@@ -1,10 +1,11 @@
-#!/usr/bin/python2
+#Servidor WebSocket que repete as mensagens recebidas
 import tornado.web
 import tornado.websocket
 import tornado.ioloop
 
 from tornado.options import define, options, parse_command_line
-define("port", default=8888, help="run on the given port", type=int) 
+# Porta que o Servidor vai escutar
+define("port", default=8888, help="run on the given port", type=int)
  
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):

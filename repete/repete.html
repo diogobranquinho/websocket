@@ -14,7 +14,7 @@
             var ws = new WebSocket("ws://localhost:8888/websocket");
             ws.onmessage = function(evt){
                 x = document.createElement("p");
-                x.innerHTML = evt.data;
+                x.textContent = evt.data;
 				var cbox = document.getElementById("chatbox");
 				cbox.appendChild(x);
 				cbox.scrollTop = cbox.scrollHeight;     
@@ -24,7 +24,7 @@
                 var userInput = document.getElementById("msg").value;
                 document.getElementById("msg").value = "";
                 x = document.createElement("p");
-                x.innerHTML = "Você disse: " + userInput;
+                x.textContent = "Você disse: " + userInput;
                 document.getElementById("chatbox").appendChild(x);
                 ws.send(userInput);
             }
